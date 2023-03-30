@@ -14,14 +14,19 @@ struct ContentView: View {
     @State var showingSheet = false
     
     var body: some View {
-        Button("Sign Out", action: ViewModel.signOut)
-            .sheet(isPresented: $showingSheet) {
-                SignInView()
+        VStack {
+            List(viewModel.codes) { code in
+                Text(code.name)
             }
-            .onReceive(viewModel.$connected) { connected in
-                print("connected received")
-                showingSheet = !connected
-            }
+            Button("Sign Out", action: ViewModel.signOut)
+        }
+        .sheet(isPresented: $showingSheet) {
+            SignInView()
+        }
+        .onReceive(viewModel.$connected) { connected in
+            print("connected received")
+            showingSheet = !connected
+        }
     }
 }
 

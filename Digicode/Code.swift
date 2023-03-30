@@ -9,8 +9,9 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-struct Code: Codable, Hashable {
+struct Code: Codable, Hashable, Identifiable {
     @DocumentID var id: String?
+    let code: String
     let name: String
     let location: GeoPoint
 }
