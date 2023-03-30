@@ -17,7 +17,6 @@ struct SignInView: View {
 
     var body: some View {
         VStack {
-//            Text(password)
             TextField("e-mail", text: $email)
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
@@ -30,7 +29,7 @@ struct SignInView: View {
             })
         }
         .padding()
-        
+        .interactiveDismissDisabled()
     }
 }
 
