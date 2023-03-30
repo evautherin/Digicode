@@ -21,16 +21,9 @@ struct ContentView: View {
 //            case false: Text("Disconnected")
 //            }
             
-            if (viewModel.connected) {
+            if (viewModel.connected) { // viewModel.user != .none
                 VStack {
-                    Button("Logout", action: {
-                        do {
-                            try Auth.auth().signOut()
-//                            connected = false
-                        } catch {
-                            print("Error: \(error.localizedDescription)")
-                        }
-                    })
+                    Button("Sign Out", action: ViewModel.signOut)
                 }
                 .padding()
             } else {

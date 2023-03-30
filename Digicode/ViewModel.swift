@@ -12,6 +12,7 @@ import FirebaseAuthCombineSwift
 
 class ViewModel: ObservableObject {
     @Published var connected = (Auth.auth().currentUser != .none)
+    @Published var user = Auth.auth().currentUser
     
     init() {
         Auth.auth().authStateDidChangePublisher()
@@ -22,5 +23,24 @@ class ViewModel: ObservableObject {
                 }
             }
             .assign(to: &$connected)
+        
+        Auth.auth().authStateDidChangePublisher().assign(to: &$user)
+    }
+    
+    static func signIn(withEmail email: String, password: String) {
+        Auth.auth().signIn(withEmail: email, password: password) {(_, error) in
+            if let error = error {
+                print("Error: \(error)")
+                return
+            }
+        }
+    }
+    
+    static func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
     }
 }
