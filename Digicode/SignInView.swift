@@ -35,19 +35,13 @@ struct SignInView: View {
                     }
                     
                     if let result = result {
-                        connected = true
+//                        connected = true
                         print("\(result.user.uid)")
                     }
                 }
             })
         }
         .padding()
-//        .onReceive(Auth.auth().authStateDidChangePublisher()) { user in
-//            switch user {
-//            case .none: print("Disconnected")
-//            case .some(let user): print("User \(user.uid) connected")
-//            }
-//        }
         
     }
 }
