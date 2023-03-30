@@ -18,6 +18,7 @@
 		8F0AC7A029D4525300101EBA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 8F0AC79F29D4525300101EBA /* FirebaseFirestore */; };
 		8F0AC7A229D4525300101EBA /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 8F0AC7A129D4525300101EBA /* FirebaseFirestoreCombine-Community */; };
 		8F0AC7A429D4525300101EBA /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8F0AC7A329D4525300101EBA /* FirebaseFirestoreSwift */; };
+		8F77A98629D57E0F00B6E759 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F77A98529D57E0F00B6E759 /* SignInView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		8F0AC78429D42FFC00101EBA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8F0AC79629D44E1200101EBA /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		8F0AC79829D44E5100101EBA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8F77A98529D57E0F00B6E759 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 			children = (
 				8F0AC77D29D42FFB00101EBA /* DigicodeApp.swift */,
 				8F0AC77F29D42FFB00101EBA /* ContentView.swift */,
+				8F77A98529D57E0F00B6E759 /* SignInView.swift */,
 				8F0AC78129D42FFC00101EBA /* Assets.xcassets */,
 				8F0AC79829D44E5100101EBA /* GoogleService-Info.plist */,
 				8F0AC78329D42FFC00101EBA /* Preview Content */,
@@ -165,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F77A98629D57E0F00B6E759 /* SignInView.swift in Sources */,
 				8F0AC78029D42FFB00101EBA /* ContentView.swift in Sources */,
 				8F0AC77E29D42FFB00101EBA /* DigicodeApp.swift in Sources */,
 			);
