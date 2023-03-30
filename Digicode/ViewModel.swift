@@ -31,7 +31,6 @@ class ViewModel: ObservableObject {
         Auth.auth().signIn(withEmail: email, password: password) {(_, error) in
             if let error = error {
                 print("Error: \(error)")
-                return
             }
         }
     }

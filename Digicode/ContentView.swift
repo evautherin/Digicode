@@ -11,37 +11,17 @@ import FirebaseAuthCombineSwift
 
 struct ContentView: View {
     @StateObject var viewModel = ViewModel()
-//    @State var connected = (Auth.auth().currentUser != .none)
+    @State var showingSheet = false
     
     var body: some View {
-        Group {
-            
-//            switch connected {
-//            case true: Text("Connected")
-//            case false: Text("Disconnected")
-//            }
-            
-            if (viewModel.connected) { // viewModel.user != .none
-                VStack {
-                    Button("Sign Out", action: ViewModel.signOut)
-                }
-                .padding()
-            } else {
+        Button("Sign Out", action: ViewModel.signOut)
+            .sheet(isPresented: $showingSheet) {
                 SignInView()
             }
-        }
-//        .onReceive(Auth.auth().authStateDidChangePublisher()) { user in
-//            switch user {
-//            case .none:
-//                print("Disconnected")
-//                connected = false
-//
-//            case .some(let user):
-//                print("User \(user.uid) connected")
-//                connected = true
-//            }
-//        }
-
+            .onReceive(viewModel.$connected) { connected in
+                print("connected received")
+                showingSheet = !connected
+            }
     }
 }
 

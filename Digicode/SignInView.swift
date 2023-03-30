@@ -25,7 +25,7 @@ struct SignInView: View {
 
             SecureField("Password", text: $password)
             
-            Button("Login", action: {
+            Button("Sign In", action: {
                 ViewModel.signIn(withEmail: email, password: password)
             })
         }

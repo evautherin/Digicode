@@ -20,6 +20,7 @@
 		8F0AC7A429D4525300101EBA /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8F0AC7A329D4525300101EBA /* FirebaseFirestoreSwift */; };
 		8F77A98629D57E0F00B6E759 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F77A98529D57E0F00B6E759 /* SignInView.swift */; };
 		8F77A98829D59BDE00B6E759 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F77A98729D59BDE00B6E759 /* ViewModel.swift */; };
+		8F77A98A29D5B11C00B6E759 /* Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F77A98929D5B11C00B6E759 /* Code.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		8F0AC79829D44E5100101EBA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8F77A98529D57E0F00B6E759 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		8F77A98729D59BDE00B6E759 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		8F77A98929D5B11C00B6E759 /* Code.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Code.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				8F0AC77F29D42FFB00101EBA /* ContentView.swift */,
 				8F77A98729D59BDE00B6E759 /* ViewModel.swift */,
 				8F77A98529D57E0F00B6E759 /* SignInView.swift */,
+				8F77A98929D5B11C00B6E759 /* Code.swift */,
 				8F0AC78129D42FFC00101EBA /* Assets.xcassets */,
 				8F0AC79829D44E5100101EBA /* GoogleService-Info.plist */,
 				8F0AC78329D42FFC00101EBA /* Preview Content */,
@@ -175,6 +178,7 @@
 				8F0AC78029D42FFB00101EBA /* ContentView.swift in Sources */,
 				8F77A98829D59BDE00B6E759 /* ViewModel.swift in Sources */,
 				8F0AC77E29D42FFB00101EBA /* DigicodeApp.swift in Sources */,
+				8F77A98A29D5B11C00B6E759 /* Code.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
