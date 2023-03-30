@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseAuthCombineSwift
 
 struct SignInView: View {
-    @Binding var connected: Bool
+//    @Binding var connected: Bool
     
     @State var email = ""
     @State var password = ""
@@ -28,16 +28,16 @@ struct SignInView: View {
             Button("Login", action: {
                 print("e-mail: \(email), password: \(password)")
                 
-                Auth.auth().signIn(withEmail: email, password: password) {(result, error) in
+                Auth.auth().signIn(withEmail: email, password: password) {(_, error) in
                     if let error = error {
                         print("Error: \(error)")
                         return
                     }
                     
-                    if let result = result {
-//                        connected = true
-                        print("\(result.user.uid)")
-                    }
+//                    if let result = result {
+////                        connected = true
+//                        print("\(result.user.uid)")
+//                    }
                 }
             })
         }
@@ -48,6 +48,6 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView(connected: .constant(true))
+        SignInView()
     }
 }

@@ -10,7 +10,8 @@ import FirebaseAuth
 import FirebaseAuthCombineSwift
 
 struct ContentView: View {
-    @State var connected = (Auth.auth().currentUser != .none)
+    @StateObject var viewModel = ViewModel()
+//    @State var connected = (Auth.auth().currentUser != .none)
     
     var body: some View {
         Group {
@@ -20,7 +21,7 @@ struct ContentView: View {
 //            case false: Text("Disconnected")
 //            }
             
-            if (connected) {
+            if (viewModel.connected) {
                 VStack {
                     Button("Logout", action: {
                         do {
@@ -33,20 +34,20 @@ struct ContentView: View {
                 }
                 .padding()
             } else {
-                SignInView(connected: $connected)
+                SignInView()
             }
         }
-        .onReceive(Auth.auth().authStateDidChangePublisher()) { user in
-            switch user {
-            case .none:
-                print("Disconnected")
-                connected = false
-                
-            case .some(let user):
-                print("User \(user.uid) connected")
-                connected = true
-            }
-        }
+//        .onReceive(Auth.auth().authStateDidChangePublisher()) { user in
+//            switch user {
+//            case .none:
+//                print("Disconnected")
+//                connected = false
+//
+//            case .some(let user):
+//                print("User \(user.uid) connected")
+//                connected = true
+//            }
+//        }
 
     }
 }
