@@ -10,6 +10,8 @@ import FirebaseAuth
 import FirebaseAuthCombineSwift
 
 struct SignInView: View {
+    @Binding var connected: Bool
+    
     @State var email = ""
     @State var password = ""
 
@@ -33,6 +35,7 @@ struct SignInView: View {
                     }
                     
                     if let result = result {
+                        connected = true
                         print("\(result.user.uid)")
                     }
                 }
@@ -51,6 +54,6 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView()
+        SignInView(connected: .constant(true))
     }
 }

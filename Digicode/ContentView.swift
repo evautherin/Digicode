@@ -10,17 +10,24 @@ import FirebaseAuth
 import FirebaseAuthCombineSwift
 
 struct ContentView: View {
+    @State var connected = (Auth.auth().currentUser != .none)
+    
     var body: some View {
-        VStack {
-            Button("Logout", action: {
-                do {
-                    try Auth.auth().signOut()
-                } catch {
-                    print("Error: \(error.localizedDescription)")
-                }
-            })
+        if (connected) {
+            VStack {
+                Button("Logout", action: {
+                    do {
+                        try Auth.auth().signOut()
+                        connected = false
+                    } catch {
+                        print("Error: \(error.localizedDescription)")
+                    }
+                })
+            }
+            .padding()
+        } else {
+            SignInView(connected: $connected)
         }
-        .padding()
     }
 }
 
