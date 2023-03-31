@@ -14,15 +14,22 @@ import FirebaseFirestoreCombineSwift
 import FirebaseAuth
 import FirebaseAuthCombineSwift
 import Combine
+import CoreLocation
 
-class ViewModel: ObservableObject {
+class ViewModel: NSObject, ObservableObject {
     @Published var connected = (Auth.auth().currentUser != .none)
     @Published var user = Auth.auth().currentUser
     @Published var codes = [Code]()
     
+    let locationManager = CLLocationManager()
     var subscriptions = Set<AnyCancellable>()
     
-    init() {
+    override init() {
+        super.init()
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        
         Auth.auth().authStateDidChangePublisher()
             .map { user in
                 switch user {
@@ -88,5 +95,16 @@ class ViewModel: ObservableObject {
                 }
             } receiveValue: { }
             .store(in: &subscriptions)
+    }
+}
+
+
+extension ViewModel: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        print("locationManagerDidChangeAuthorization")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("didUpdateLocations")
     }
 }
