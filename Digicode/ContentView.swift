@@ -25,17 +25,28 @@ struct ContentView: View {
 //                List(viewModel.codes) { code in
 //                    NavigationLink(code.name, value: code)
 //                }
-                Map(coordinateRegion: $mapRegion, annotationItems: viewModel.annotations) { annotation -> MapMarker in
+                Map(
+                    coordinateRegion: $mapRegion,
+                    annotationItems: viewModel.annotations
+                ) { annotation -> MapAnnotation<AnyView> in
+                    let (coordinate, color): (CLLocationCoordinate2D, Color)
+                    
                     switch annotation {
                     case .code(let code):
-                        let coordinates = CLLocationCoordinate2D(
+                        (coordinate, color) = (CLLocationCoordinate2D(
                             latitude: code.location.latitude,
                             longitude: code.location.longitude
-                        )
-                        return MapMarker(coordinate: coordinates)
-                        
+                        ), .red)
                     case .userLocation(let location):
-                        return MapMarker(coordinate: location.coordinate)
+                        (coordinate, color) = (location.coordinate, .blue)
+                    }
+                    
+                    return MapAnnotation(coordinate: coordinate) {
+                        AnyView(
+                            Circle()
+                                .stroke(color, lineWidth: 3)
+                                .frame(width: 44, height: 44)
+                        )
                     }
                 }
                 

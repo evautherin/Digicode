@@ -70,6 +70,7 @@ class ViewModel: NSObject, ObservableObject {
                 case .some(let location): return codesAsAnnotations + [Annotation.userLocation(location)]
                 }
             }
+            .receive(on: DispatchQueue.main)
             .assign(to: &$annotations)
     }
     
