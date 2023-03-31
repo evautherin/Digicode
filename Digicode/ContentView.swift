@@ -19,6 +19,37 @@ struct ContentView: View {
         span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
     )
     
+    func annotationContent(annotation: Annotation) -> MapAnnotation<AnyView> {
+        switch annotation {
+        case .code(let code):
+            let coordinate = CLLocationCoordinate2D(
+                latitude: code.location.latitude,
+                longitude: code.location.longitude
+            )
+            return MapAnnotation(coordinate: coordinate) {
+                AnyView(
+                    NavigationLink {
+                        Text(code.name)
+                    } label: {
+                        Circle()
+                            .stroke(.red, lineWidth: 3)
+                            .frame(width: 44, height: 44)
+                    }
+                )
+            }
+
+        case .userLocation(let location):
+            return MapAnnotation(coordinate: location.coordinate) {
+                AnyView(
+                    Circle()
+                        .stroke(.blue, lineWidth: 3)
+                        .frame(width: 44, height: 44)
+                )
+            }
+        }
+        
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -27,34 +58,21 @@ struct ContentView: View {
 //                }
                 Map(
                     coordinateRegion: $mapRegion,
-                    annotationItems: viewModel.annotations
-                ) { annotation -> MapAnnotation<AnyView> in
-                    let (coordinate, color): (CLLocationCoordinate2D, Color)
-                    
-                    switch annotation {
-                    case .code(let code):
-                        (coordinate, color) = (CLLocationCoordinate2D(
-                            latitude: code.location.latitude,
-                            longitude: code.location.longitude
-                        ), .red)
-                    case .userLocation(let location):
-                        (coordinate, color) = (location.coordinate, .blue)
-                    }
-                    
-                    return MapAnnotation(coordinate: coordinate) {
-                        AnyView(
-                            Circle()
-                                .stroke(color, lineWidth: 3)
-                                .frame(width: 44, height: 44)
-                        )
-                    }
-                }
+                    annotationItems: viewModel.annotations,
+                    annotationContent: annotationContent
+                )
                 
                 Button("Sign Out", action: ViewModel.signOut)
+                
+                Spacer()
+                    .frame(height: 20.0)
+                
             }
             .navigationDestination(for: Code.self) { code in
                 CodeView(code: code)
             }
+            .navigationTitle("Digicode")
+            .ignoresSafeArea()
             .sheet(isPresented: $showingSheet) {
                 SignInView()
             }
