@@ -20,6 +20,8 @@ class ViewModel: NSObject, ObservableObject {
     @Published var connected = (Auth.auth().currentUser != .none)
     @Published var user = Auth.auth().currentUser
     @Published var codes = [Code]()
+    @Published var location = CLLocation?.none
+    @Published var annotations = [Annotation]()
     
     let locationManager = CLLocationManager()
     var subscriptions = Set<AnyCancellable>()
@@ -29,6 +31,8 @@ class ViewModel: NSObject, ObservableObject {
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        
+        locationManager.startUpdatingLocation()
         
         Auth.auth().authStateDidChangePublisher()
             .map { user in
@@ -55,6 +59,18 @@ class ViewModel: NSObject, ObservableObject {
             })
             .print("*** Codes")
             .assign(to: &$codes)
+        
+        Publishers.CombineLatest($codes, $location)
+            .map { (codes, location) -> [Annotation] in
+                let codesAsAnnotations = codes.map { code -> Annotation in
+                    Annotation.code(code)
+                }
+                switch location {
+                case .none: return codesAsAnnotations
+                case .some(let location): return codesAsAnnotations + [Annotation.userLocation(location)]
+                }
+            }
+            .assign(to: &$annotations)
     }
     
     static func signIn(withEmail email: String, password: String) {
@@ -101,10 +117,11 @@ class ViewModel: NSObject, ObservableObject {
 
 extension ViewModel: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        print("locationManagerDidChangeAuthorization")
+        print("locationManagerDidChangeAuthorization: \(locationManager.authorizationStatus)")
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("didUpdateLocations")
+        location = locations.last
     }
 }
