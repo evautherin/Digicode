@@ -9,6 +9,7 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseAuthCombineSwift
 import MapKit
+import CoreLocation
 
 struct ContentView: View {
     @StateObject var viewModel = ViewModel()
@@ -24,7 +25,19 @@ struct ContentView: View {
 //                List(viewModel.codes) { code in
 //                    NavigationLink(code.name, value: code)
 //                }
-                Map(coordinateRegion: $mapRegion)
+                Map(coordinateRegion: $mapRegion, annotationItems: viewModel.annotations) { annotation -> MapMarker in
+                    switch annotation {
+                    case .code(let code):
+                        let coordinates = CLLocationCoordinate2D(
+                            latitude: code.location.latitude,
+                            longitude: code.location.longitude
+                        )
+                        return MapMarker(coordinate: coordinates)
+                        
+                    case .userLocation(let location):
+                        return MapMarker(coordinate: location.coordinate)
+                    }
+                }
                 
                 Button("Sign Out", action: ViewModel.signOut)
             }

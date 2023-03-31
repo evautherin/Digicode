@@ -8,7 +8,19 @@
 import Foundation
 import CoreLocation
 
-enum Annotation {
+enum Annotation: Identifiable {
     case userLocation(CLLocation)
     case code(Code)
+    
+    var id: String {
+        switch self {
+        case .userLocation(let location): return location.id
+        case .code(let code): return code.id ?? ""
+        }
+    }
+}
+
+
+extension CLLocation: Identifiable {
+    public var id: String { "\(coordinate.latitude):\(coordinate.longitude)"}
 }
