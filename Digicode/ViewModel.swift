@@ -20,6 +20,8 @@ class ViewModel: ObservableObject {
     @Published var user = Auth.auth().currentUser
     @Published var codes = [Code]()
     
+    var subscriptions = Set<AnyCancellable>()
+    
     init() {
         Auth.auth().authStateDidChangePublisher()
             .map { user in
@@ -62,5 +64,29 @@ class ViewModel: ObservableObject {
         } catch {
             print("Error: \(error.localizedDescription)")
         }
+    }
+        
+    func addCard(from card: Code) {
+        let db = Firestore.firestore()
+        db.collection("codes").addDocument(from: card)
+            .sink { completion in
+                switch completion {
+                case .finished: break
+                case .failure(let error): print("Error: \(error.localizedDescription)")
+                }
+            } receiveValue: { _ in }
+            .store(in: &subscriptions)
+    }
+    
+    func removeCard(id: String) {
+        let db = Firestore.firestore()
+        db.collection("codes").document(id).delete()
+            .sink { completion in
+                switch completion {
+                case .finished: break
+                case .failure(let error): print("Error: \(error.localizedDescription)")
+                }
+            } receiveValue: { }
+            .store(in: &subscriptions)
     }
 }

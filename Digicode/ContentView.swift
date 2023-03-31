@@ -14,18 +14,24 @@ struct ContentView: View {
     @State var showingSheet = false
     
     var body: some View {
-        VStack {
-            List(viewModel.codes) { code in
-                Text(code.name)
+        NavigationStack {
+            VStack {
+                List(viewModel.codes) { code in
+//                    Text(code.name)
+                    NavigationLink(code.name, value: code)
+                }
+                Button("Sign Out", action: ViewModel.signOut)
             }
-            Button("Sign Out", action: ViewModel.signOut)
-        }
-        .sheet(isPresented: $showingSheet) {
-            SignInView()
-        }
-        .onReceive(viewModel.$connected) { connected in
-            print("connected received")
-            showingSheet = !connected
+            .navigationDestination(for: Code.self) { code in
+                CodeView(code: code)
+            }
+            .sheet(isPresented: $showingSheet) {
+                SignInView()
+            }
+            .onReceive(viewModel.$connected) { connected in
+                print("connected received")
+                showingSheet = !connected
+            }
         }
     }
 }
