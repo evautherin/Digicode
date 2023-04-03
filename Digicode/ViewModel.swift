@@ -17,11 +17,11 @@ import Combine
 import CoreLocation
 
 class ViewModel: NSObject, ObservableObject {
-    @Published var connected = (Auth.auth().currentUser != .none)
     @Published var user = Auth.auth().currentUser
+    @Published var showingSignInView = false
     @Published var codes = [Code]()
     @Published var location = CLLocation?.none
-    @Published var annotations = [Annotation]()
+    @Published var annotations = [AnnotationItem]()
     
     let locationManager = CLLocationManager()
     var subscriptions = Set<AnyCancellable>()
@@ -34,16 +34,16 @@ class ViewModel: NSObject, ObservableObject {
         
         locationManager.startUpdatingLocation()
         
-        Auth.auth().authStateDidChangePublisher()
+        Auth.auth().authStateDidChangePublisher().assign(to: &$user)
+
+        $user
             .map { user in
                 switch user {
-                case .none: return false
-                case .some(_): return true
+                case .none: return true
+                case .some(_): return false
                 }
             }
-            .assign(to: &$connected)
-        
-        Auth.auth().authStateDidChangePublisher().assign(to: &$user)
+            .assign(to: &$showingSignInView)
         
         let db = Firestore.firestore()
         db.collection("codes")
@@ -61,19 +61,34 @@ class ViewModel: NSObject, ObservableObject {
             .assign(to: &$codes)
         
         Publishers.CombineLatest($codes, $location)
-            .map { (codes, location) -> [Annotation] in
-                let codesAsAnnotations = codes.map { code -> Annotation in
-                    Annotation.code(code)
+            .map { (codes, location) -> [AnnotationItem] in
+                let codesAsAnnotations = codes.map { code -> AnnotationItem in
+                    AnnotationItem.code(code)
                 }
                 switch location {
                 case .none: return codesAsAnnotations
-                case .some(let location): return codesAsAnnotations + [Annotation.userLocation(location)]
+                case .some(let location): return codesAsAnnotations + [AnnotationItem.userLocation(location)]
                 }
             }
             .receive(on: DispatchQueue.main)
             .assign(to: &$annotations)
     }
+}
+
+
+extension ViewModel: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        print("locationManagerDidChangeAuthorization: \(locationManager.authorizationStatus)")
+    }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("didUpdateLocations")
+        location = locations.last
+    }
+}
+
+
+extension ViewModel {
     static func signIn(withEmail email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) {(_, error) in
             if let error = error {
@@ -90,9 +105,9 @@ class ViewModel: NSObject, ObservableObject {
         }
     }
         
-    func addCard(from card: Code) {
+    func addCode(from code: Code) {
         let db = Firestore.firestore()
-        db.collection("codes").addDocument(from: card)
+        db.collection("codes").addDocument(from: code)
             .sink { completion in
                 switch completion {
                 case .finished: break
@@ -102,7 +117,7 @@ class ViewModel: NSObject, ObservableObject {
             .store(in: &subscriptions)
     }
     
-    func removeCard(id: String) {
+    func removeCode(id: String) {
         let db = Firestore.firestore()
         db.collection("codes").document(id).delete()
             .sink { completion in
@@ -112,17 +127,5 @@ class ViewModel: NSObject, ObservableObject {
                 }
             } receiveValue: { }
             .store(in: &subscriptions)
-    }
-}
-
-
-extension ViewModel: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        print("locationManagerDidChangeAuthorization: \(locationManager.authorizationStatus)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("didUpdateLocations")
-        location = locations.last
     }
 }

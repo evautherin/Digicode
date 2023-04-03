@@ -6,12 +6,8 @@
 //
 
 import SwiftUI
-import FirebaseAuth
-import FirebaseAuthCombineSwift
 
 struct SignInView: View {
-//    @Binding var connected: Bool
-    
     @State var email = ""
     @State var password = ""
 
